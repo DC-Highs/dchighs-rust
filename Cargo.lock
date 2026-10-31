@@ -160,7 +160,7 @@ dependencies = [
 
 [[package]]
 name = "dc-assets"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "bytes",
  "dc-core",
@@ -171,7 +171,7 @@ dependencies = [
 
 [[package]]
 name = "dc-client-state"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "quick-xml",
  "serde",
@@ -182,7 +182,7 @@ dependencies = [
 
 [[package]]
 name = "dc-config"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "dc-core",
  "reqwest",
@@ -194,7 +194,7 @@ dependencies = [
 
 [[package]]
 name = "dc-config-mapper"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "chrono",
  "dc-config",
@@ -208,7 +208,7 @@ dependencies = [
 
 [[package]]
 name = "dc-core"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "rand 0.8.8",
  "regex",
@@ -218,7 +218,7 @@ dependencies = [
 
 [[package]]
 name = "dc-localization"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "dc-core",
  "reqwest",
@@ -230,7 +230,7 @@ dependencies = [
 
 [[package]]
 name = "dc-statistics"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "dc-core",
  "serde",
