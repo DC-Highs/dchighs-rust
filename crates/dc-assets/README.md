@@ -1,6 +1,6 @@
 # dc-assets
 
-Download static assets from the [Dragon City](https://dragoncitygame.com/) servers (sprites, thumbnails, animations, island packages, music).
+Download static assets from the [Dragon City](https://dragoncitygame.com/) servers (sprites, thumbnails, animations, island packages, music, Flash client versions).
 Rust port of [`@dchighs/dc-assets`](https://github.com/DC-Highs/dc-assets). Fan-made, not affiliated with SocialPoint.
 
 ## Installation
@@ -48,6 +48,7 @@ async fn main() -> Result<(), dc_assets::Error> {
 | `dcAssets.dragons.animations.spine` | `DragonSpineAnimationDownloader::new(image_name, phase)` (`.zip`; `.texture_compression_format(..)`, `.use_new_url_format(false)`) |
 | `dcAssets.islands.package` | `IslandPackageDownloader::new(island_type, file_name)` or `::from_path(path)` |
 | `dcAssets.sounds.music` | `MusicDownloader::new(key_name)` |
+| `dcAssets.flash.client` | `FlashClientDownloader::new(version)` (`Base_sec_<version>.swf`, the Flash client itself) |
 | `dcAssets.chests.sprite` | `ChestSpriteDownloader::new(image_name)` (falls back to `ui_basic_*`) |
 | `dcAssets.buildings.sprite` / `.thumbnail` | `BuildingSpriteDownloader` / `BuildingThumbnailDownloader` |
 | `dcAssets.decorations.sprite` / `.thumbnail` | `DecorationSpriteDownloader` / `DecorationThumbnailDownloader` |

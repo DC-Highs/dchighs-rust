@@ -24,6 +24,7 @@
 mod client;
 mod dragons;
 mod error;
+mod flash;
 mod islands;
 mod sounds;
 mod structures;
@@ -34,6 +35,7 @@ pub use dragons::{
     DragonThumbnailDownloader,
 };
 pub use error::Error;
+pub use flash::FlashClientDownloader;
 pub use islands::{ChestSpriteDownloader, IslandPackageDownloader};
 pub use sounds::MusicDownloader;
 pub use structures::{
