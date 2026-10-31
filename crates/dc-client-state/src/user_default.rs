@@ -6,17 +6,13 @@ use serde::{Deserialize, Serialize};
 
 use crate::Error;
 
-/// An individual key-value entry in `UserDefault.xml`.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct UserDefaultEntry {
-    /// The entry key identifier (from `key="..."` attribute).
     pub key: String,
-    /// The entry text content, or `None` if self-closing/empty.
     pub value: Option<String>,
 }
 
 impl UserDefaultEntry {
-    /// Creates a new entry.
     pub fn new(key: impl Into<String>, value: Option<impl Into<String>>) -> Self {
         Self {
             key: key.into(),
@@ -24,32 +20,27 @@ impl UserDefaultEntry {
         }
     }
 
-    /// Convenience helper to access the value as string slice.
     pub fn value_as_str(&self) -> Option<&str> {
         self.value.as_deref()
     }
 }
 
-/// Low-level manager for reading and modifying `UserDefault.xml`.
 #[derive(Debug, Clone)]
 pub struct UserDefault {
     file_path: PathBuf,
 }
 
 impl UserDefault {
-    /// Creates a new `UserDefault` handle for the given file path.
     pub fn new(file_path: impl Into<PathBuf>) -> Self {
         Self {
             file_path: file_path.into(),
         }
     }
 
-    /// Returns the path to the `UserDefault.xml` file.
     pub fn file_path(&self) -> &Path {
         &self.file_path
     }
 
-    /// Parses the raw XML file into a list of [`UserDefaultEntry`].
     pub fn read_raw(&self) -> Result<Vec<UserDefaultEntry>, Error> {
         if !self.file_path.exists() {
             return Err(Error::UserDefaultNotFound(self.file_path.clone()));
@@ -59,7 +50,6 @@ impl UserDefault {
         Self::parse_xml(&xml)
     }
 
-    /// Serializes and writes entries to `UserDefault.xml`.
     pub fn write_raw(&self, entries: &[UserDefaultEntry]) -> Result<(), Error> {
         if let Some(parent) = self.file_path.parent() {
             fs::create_dir_all(parent)?;
@@ -70,12 +60,10 @@ impl UserDefault {
         Ok(())
     }
 
-    /// Alias for [`read_raw`], matching the TypeScript API.
     pub fn get_normalized_entries(&self) -> Result<Vec<UserDefaultEntry>, Error> {
         self.read_raw()
     }
 
-    /// Gets a value by its exact key. Returns `None` if not found or empty.
     pub fn get(&self, key: &str) -> Result<Option<String>, Error> {
         let entries = self.read_raw()?;
         for entry in entries {
@@ -86,7 +74,6 @@ impl UserDefault {
         Ok(None)
     }
 
-    /// Sets or updates a key with a string value.
     pub fn set(&self, key: &str, value: impl AsRef<str>) -> Result<(), Error> {
         let val_str = value.as_ref().to_string();
         self.mutate_entries(|entries| {
@@ -101,17 +88,14 @@ impl UserDefault {
         })
     }
 
-    /// Sets or updates a key with a boolean value (`"true"` / `"false"`).
     pub fn set_bool(&self, key: &str, value: bool) -> Result<(), Error> {
         self.set(key, if value { "true" } else { "false" })
     }
 
-    /// Sets or updates a key with a number value.
     pub fn set_number<N: ToString>(&self, key: &str, value: N) -> Result<(), Error> {
         self.set(key, value.to_string())
     }
 
-    /// Deletes an entry by key. Returns `true` if an entry was removed.
     pub fn delete(&self, key: &str) -> Result<bool, Error> {
         let mut removed = false;
         self.mutate_entries(|entries| {
@@ -122,7 +106,6 @@ impl UserDefault {
         Ok(removed)
     }
 
-    /// Lists all entries whose key starts with the given prefix.
     pub fn list_by_prefix(&self, prefix: &str) -> Result<Vec<UserDefaultEntry>, Error> {
         let entries = self.read_raw()?;
         Ok(entries
@@ -131,7 +114,6 @@ impl UserDefault {
             .collect())
     }
 
-    /// Lists all entries whose key contains the given substring.
     pub fn list_by_include(&self, substring: &str) -> Result<Vec<UserDefaultEntry>, Error> {
         let entries = self.read_raw()?;
         Ok(entries
@@ -140,7 +122,6 @@ impl UserDefault {
             .collect())
     }
 
-    /// Helper to read, apply in-place mutations, and save back atomically.
     pub(crate) fn mutate_entries<F>(&self, mutate: F) -> Result<(), Error>
     where
         F: FnOnce(&mut Vec<UserDefaultEntry>),
@@ -155,7 +136,6 @@ impl UserDefault {
         self.write_raw(&entries)
     }
 
-    /// Parses XML string into [`UserDefaultEntry`] items.
     pub fn parse_xml(xml: &str) -> Result<Vec<UserDefaultEntry>, Error> {
         let mut reader = Reader::from_str(xml);
         reader.config_mut().trim_text(true);
@@ -223,7 +203,6 @@ impl UserDefault {
         Ok(entries)
     }
 
-    /// Serializes a list of entries into formatted XML.
     pub fn serialize_entries(entries: &[UserDefaultEntry]) -> String {
         let mut out = String::from("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<userDefaultRoot>\n");
         for entry in entries {

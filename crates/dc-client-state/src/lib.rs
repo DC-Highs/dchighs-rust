@@ -16,22 +16,18 @@
 //! use dc_client_state::{ClientState, AssetType};
 //!
 //! # fn main() -> Result<(), dc_client_state::Error> {
-//! // Auto-detect Dragon City installation from %LOCALAPPDATA%\Packages
 //! let client = ClientState::new()?;
 //! println!("Dragon City path: {:?}", client.dragon_city_dir_path());
 //!
-//! // High-level preferences
 //! let preferences = client.preferences();
 //! preferences.disable_music()?;
 //! if let Some(user_id) = preferences.get_user_id()? {
 //!     println!("Current User Origin ID: {user_id}");
 //! }
 //!
-//! // Low-level access to UserDefault.xml
 //! let music_disabled = client.user_default().get("options_music_disabled")?;
 //! assert_eq!(music_disabled.as_deref(), Some("true"));
 //!
-//! // Local assets management
 //! let images = client.assets().list_assets(Some(&[AssetType::Image]))?;
 //! println!("Found {} cached images", images.len());
 //! # Ok(())
@@ -120,12 +116,10 @@ mod tests {
         let (_dir, client) = setup_mock_environment();
         let pref = client.preferences();
 
-        // User ID
         assert_eq!(pref.get_user_id().unwrap(), Some(314753482635337));
         pref.set_user_id(99999999).unwrap();
         assert_eq!(pref.get_user_id().unwrap(), Some(99999999));
 
-        // Music & Sound
         assert!(pref.is_music_disabled().unwrap());
         pref.enable_music().unwrap();
         assert!(!pref.is_music_disabled().unwrap());
@@ -138,12 +132,10 @@ mod tests {
         pref.enable_sound().unwrap();
         assert!(!pref.is_sound_disabled().unwrap());
 
-        // Last execution
         let last_secs = pref.get_last_execution_secs().unwrap();
         assert_eq!(last_secs, Some(1791514321));
         assert!(pref.get_last_execution().unwrap().is_some());
 
-        // Farm crops
         let crops = pref.get_all_farm_crops().unwrap();
         assert_eq!(crops.len(), 3);
         pref.set_farm_crop_range(20, 1, 3).unwrap();
@@ -161,7 +153,6 @@ mod tests {
         pref.delete_all_farm_crops().unwrap();
         assert_eq!(pref.get_all_farm_crops().unwrap().len(), 0);
 
-        // Tutorials
         let tuts = pref.get_display_tutorials().unwrap();
         assert_eq!(tuts.len(), 2);
         pref.set_display_tutorials(false).unwrap();
@@ -171,7 +162,6 @@ mod tests {
         pref.delete_display_tutorials().unwrap();
         assert_eq!(pref.get_display_tutorials().unwrap().len(), 0);
 
-        // Sanctuary breeding retry dragons
         let sanctuary = pref.get_retry_breed_sanctuary_dragons().unwrap().unwrap();
         assert_eq!(sanctuary.left_account_dragon_id, 12605570);
         assert_eq!(sanctuary.right_account_dragon_id, 7802883);
@@ -202,11 +192,9 @@ mod tests {
         assert_eq!(textures.len(), 1);
         assert!(textures[0].ends_with("texture.dds"));
 
-        // Delete asset
         assets.delete("test_ui.png").unwrap();
         assert_eq!(assets.list_assets(Some(&[AssetType::Image])).unwrap().len(), 0);
 
-        // Clear all
         assets.clear_assets().unwrap();
         assert_eq!(assets.list_assets(None).unwrap().len(), 0);
     }
