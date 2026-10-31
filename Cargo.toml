@@ -17,3 +17,4 @@ dc-config = { path = "crates/dc-config", version = "0.1.0" }
 dc-config-mapper = { path = "crates/dc-config-mapper", version = "0.1.0" }
 dc-statistics = { path = "crates/dc-statistics", version = "0.1.0" }
 dc-assets = { path = "crates/dc-assets", version = "0.1.0" }
+dc-client-state = { path = "crates/dc-client-state", version = "0.1.0" }

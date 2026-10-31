@@ -11,6 +11,7 @@ Fan-made, not affiliated with SocialPoint.
 | [`dc-assets`](crates/dc-assets) | `@dchighs/dc-assets` | download sprites, thumbnails, animations, music |
 | [`dc-config`](crates/dc-config) | `@dchighs/dc-config` | fetch/load the game configuration |
 | [`dc-config-mapper`](crates/dc-config-mapper) | `@dchighs/dc-config-mapper` | restructure, translate and populate the configuration |
+| [`dc-client-state`](crates/dc-client-state) | `@dchighs/dc-client-state` | Windows client state manager (UserDefault.xml preferences and cached assets) |
 
 ## Using it before publishing
 
@@ -22,6 +23,7 @@ dc-statistics = { path = "D:/v2Projects/@dchighs/rust-packages/crates/dc-statist
 dc-assets = { path = "D:/v2Projects/@dchighs/rust-packages/crates/dc-assets" }
 dc-config = { path = "D:/v2Projects/@dchighs/rust-packages/crates/dc-config" }
 dc-config-mapper = { path = "D:/v2Projects/@dchighs/rust-packages/crates/dc-config-mapper" }
+dc-client-state = { path = "D:/v2Projects/@dchighs/rust-packages/crates/dc-client-state" }
 ```
 
 Or from a git repository: `cargo add --git https://github.com/<you>/<repo> dc-core dc-localization dc-statistics`.
@@ -37,9 +39,10 @@ cargo publish -p dc-statistics
 cargo publish -p dc-assets
 cargo publish -p dc-config
 cargo publish -p dc-config-mapper
+cargo publish -p dc-client-state
 ```
 
-After that: `cargo add dc-core dc-localization dc-statistics dc-assets dc-config dc-config-mapper`.
+After that: `cargo add dc-core dc-localization dc-statistics dc-assets dc-config dc-config-mapper dc-client-state`.
 
 Before publishing, check the `repository` URL in the root `Cargo.toml` (it currently points to a placeholder
 `DC-Highs/dchighs-rs`) and bump `version` there (all crates share it).
